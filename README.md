@@ -5,7 +5,7 @@ Integrantes:
 |----------|----------|
 | Juan Esteban Eraso Gutierrez  | A00399655  | 
 | Damy Villegas  | A00398942  |
-| Juan Jose Contreras  | A00... | 
+| Juan Jose Contreras  | A00400298 | 
 
 
 
