@@ -9,6 +9,11 @@ import model.Interests;
 import model.User;
 
 
+/**
+ * A class representing the main functionality of the SPARK application.
+ * This application allows users to register, log in, and interact with other users based on shared interests and hobbies.
+ * Developed for the Computer Science and Discrete Structures I course by a third-semester Systems Engineering student.
+ */
 public class Main {
 
     // We create instances of the Controller and Graph classes
@@ -18,6 +23,12 @@ public class Main {
     
     // Main method
 
+    /**
+     * The main method where the SPARK application execution starts.
+     * Provides a menu for user registration, login, or exiting the application.
+     *
+     * @param args Arguments provided when running the application.
+     */
     public static void main(String[] args) {
 
         Scanner lector = new Scanner(System.in);
@@ -40,6 +51,7 @@ public class Main {
         System.out.println("OPTION:");
         optionMenu = lector.nextInt();
 
+        // Validating user's input
         while(optionMenu < 1 || optionMenu > 3)
         {
             System.out.println("Please, enter a valid option (number between 1 and 3)");
@@ -47,6 +59,7 @@ public class Main {
             optionMenu = lector.nextInt();
         }
 
+        // Performing actions based on user's choice
         switch(optionMenu)
         {
             case 1:

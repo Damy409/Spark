@@ -1,12 +1,20 @@
 package model;
 import java.util.*;
 
+/**
+ * Controller class managing user profiles and interactions in the SPARK application.
+ * Handles user creation, profile connections, recommendations, and profile discovery.
+ */
 public class Controller {
 
     static List<User> userProfiles = new ArrayList<>();
 
-    public void autoCreateGameSparks(Graph userGraph)
-    {
+    /**
+     * Automatically creates user profiles and connections in the SPARK application.
+     *
+     * @param userGraph The graph representing user connections.
+     */
+    public void autoCreateGameSparks(Graph userGraph) {
         User user1 = new User("Camila", 18, new Interests[]{Interests.books, Interests.cats, Interests.nature}, new Hobbies[]{Hobbies.dancing, Hobbies.programming, Hobbies.painting}, Genre.female);
         User user2 = new User("Abril", 19, new Interests[]{Interests.books, Interests.dogs, Interests.art}, new Hobbies[]{Hobbies.reading, Hobbies.sports, Hobbies.singing}, Genre.female);
         User user3 = new User("Sofia", 20, new Interests[]{Interests.books, Interests.nature, Interests.tech}, new Hobbies[]{Hobbies.cooking, Hobbies.videogames, Hobbies.programming}, Genre.female);
@@ -160,28 +168,43 @@ public class Controller {
         userGraph.createConnections(userProfiles);
         userGraph.printUserConnections();
 
-    
+
     }
 
-    public String createUser(String name, int age, Interests[] interests, Hobbies[] hobbies, Genre genre, Graph userGraph)
-    {
+
+    /**
+     * Creates a new user profile and establishes connections based on compatibility.
+     *
+     * @param name      The name of the user.
+     * @param age       The age of the user.
+     * @param interests The interests of the user.
+     * @param hobbies   The hobbies of the user.
+     * @param genre     The gender/genre of the user.
+     * @param userGraph The graph representing user connections.
+     * @return A success message confirming the creation of the user.
+     */
+    public String createUser(String name, int age, Interests[] interests, Hobbies[] hobbies, Genre genre, Graph userGraph) {
         User userTrial = new User(name, age, interests, hobbies, genre);
         userGraph.addProfile(userTrial);
         userProfiles.add(userTrial);
 
-        for (int i = 0; i < userProfiles.size()-1; i++)
-        {
-            if (userGraph.compabilityUsers(userProfiles.get(i), userTrial) > 60) 
-                    {
-                        userGraph.connectProfiles(userProfiles.get(i), userTrial);
-                    }
+        for (int i = 0; i < userProfiles.size() - 1; i++) {
+            if (userGraph.compabilityUsers(userProfiles.get(i), userTrial) > 60) {
+                userGraph.connectProfiles(userProfiles.get(i), userTrial);
+            }
         }
 
         userGraph.printUserConnections();
-        
+
         return "The user has been created succesfully";
     }
 
+    /**
+     * Searches for the index of a user profile in the userProfiles list by name.
+     *
+     * @param name The name of the user profile to search for.
+     * @return The index of the user profile in the list, or -1 if not found.
+     */
     public int searchListIndex(String name)
     {
         int indice = -1;
@@ -194,12 +217,25 @@ public class Controller {
         return indice;
     }
 
+    /**
+     * Retrieves a user profile from the userProfiles list based on the index.
+     *
+     * @param index The index of the user profile to retrieve.
+     * @return The user profile corresponding to the index.
+     */
     public User returnUserFromList(int index)
     {
         User logInUser = userProfiles.get(index);
         return logInUser;
     }
 
+
+    /**
+     * Shows recommendations for a given user based on interests.
+     *
+     * @param user      The user for whom recommendations are displayed.
+     * @param userGraph The graph representing user connections.
+     */
     public void showRecommendations(User user, Graph userGraph) {
         System.out.println("Compatible recommendations for " + user.getUserName() + ":");
 
@@ -209,8 +245,13 @@ public class Controller {
             }
         }
     }
-    
-    // Método para buscar y mostrar perfiles dentro de un cierto grado de separación
+
+    /**
+     * Discovers new profiles within a certain degree of separation from a user.
+     *
+     * @param userGraph  The graph representing user connections.
+     * @param userTrial  The user profile for which to discover new profiles.
+     */
     public void discoverNewProfiles(Graph userGraph, User userTrial) {
         Set<User> foundedProfiles = searchProfilesSeparation(2, userGraph, userTrial);
 
@@ -222,7 +263,14 @@ public class Controller {
         }
     }
 
-    // Método para buscar perfiles dentro de un cierto grado de separación a través de BFS
+    /**
+     * Searches for profiles within a certain degree of separation using BFS.
+     *
+     * @param degree     The degree of separation to search for.
+     * @param userGraph  The graph representing user connections.
+     * @param userTrial  The user profile to start the search from.
+     * @return A set of discovered user profiles within the specified degree of separation.
+     */
     private Set<User> searchProfilesSeparation(int degree, Graph userGraph, User userTrial) {
 
         Set<User> foundedProfiles = new HashSet<>();
