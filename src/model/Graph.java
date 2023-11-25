@@ -103,35 +103,12 @@ public class Graph {
             List<User> connectedProfiles = entry.getValue();
 
             System.out.println("User: " + userProfile.getUserName());
-            System.out.println("Conections:");
+            System.out.println("Connections:");
             for (User connectedProfile : connectedProfiles) {
                 System.out.println("\t" + connectedProfile.getUserName());
             }
             System.out.println("---------------------------");
         }
-    }
-
-    public void calcularRecomendacionesDeCoincidencia(User userTrial, Graph userGraph, List<User> userProfiles) {
-        System.out.println("Recomendaciones de coincidencias para " + userTrial.getUserName() + ":");
-
-        for (Map.Entry<User, List<User>> entry : vertices.entrySet()) {
-            User currentUser = entry.getKey();
-            List<User> connectedProfiles = entry.getValue();
-    
-            if (currentUser.getUserName().equals(userTrial.getUserName())) {
-                System.out.println("User: " + currentUser.getUserName());
-                System.out.println("Connections:");
-                for (User otroUsuario : userProfiles) {
-                    if (!userTrial.equals(otroUsuario)) {
-                        userGraph.shortestPathBasedOnInterests(userTrial, otroUsuario);
-                    }
-                    System.out.println("---------------------------");
-                    return; // Sale del método después de imprimir las conexiones del usuario encontrado
-            }
-            return;
-            }}
-
-        
     }
 
     public void showOneUserConnections(User userTrial) {
@@ -175,7 +152,7 @@ public class Graph {
     // Muestra el resultado de la similitud de intereses entre los usuarios
     if(similitud >= 2)
     {
-    System.out.println("Similitud de intereses entre " + start.getUserName() + " y " + end.getUserName() + ": " + similitud);
+    System.out.println("Possible interests match between " + start.getUserName() + " and " + end.getUserName() + ": " + similitud);
     }
     }
 

@@ -169,11 +169,11 @@ public class Controller {
         userGraph.addProfile(userTrial);
         userProfiles.add(userTrial);
 
-        for (int i = 0; i < userProfiles.size(); i++)
+        for (int i = 0; i < userProfiles.size()-1; i++)
         {
             if (userGraph.compabilityUsers(userProfiles.get(i), userTrial) > 60) 
                     {
-                        userGraph.connectProfiles(userProfiles.get(i), userTrial); // Conecta los perfiles
+                        userGraph.connectProfiles(userProfiles.get(i), userTrial);
                     }
         }
 
@@ -200,57 +200,56 @@ public class Controller {
         return logInUser;
     }
 
-    public List<User> mostrarRecomendacionesDeCoincidencia(User usuario, Graph userGraph) {
-        System.out.println("Recomendaciones de coincidencias para " + usuario.getUserName() + ":");
+    public void showRecommendations(User user, Graph userGraph) {
+        System.out.println("Compatible recommendations for " + user.getUserName() + ":");
 
-        for (User otroUsuario : userProfiles) {
-            if (!usuario.equals(otroUsuario)) {
-                userGraph.shortestPathBasedOnInterests(usuario, otroUsuario);
+        for (User otherUser : userProfiles) {
+            if (!user.equals(otherUser)) {
+                userGraph.shortestPathBasedOnInterests(user, otherUser);
             }
         }
-        return null;
     }
     
     // Método para buscar y mostrar perfiles dentro de un cierto grado de separación
     public void discoverNewProfiles(Graph userGraph, User userTrial) {
-        Set<User> perfilesEncontrados = buscarPerfilesGradoSeparacion(2, userGraph, userTrial);
+        Set<User> foundedProfiles = searchProfilesSeparation(2, userGraph, userTrial);
 
         // Mostrar los perfiles encontrados
-        System.out.println("Perfiles recomendados");
-        for (User usuario : perfilesEncontrados)
+        System.out.println("Profiles for you to discover:");
+        for (User user : foundedProfiles)
         {
-            System.out.println(usuario.getUserName());
+            System.out.println(user.getUserName());
         }
     }
 
     // Método para buscar perfiles dentro de un cierto grado de separación a través de BFS
-    private Set<User> buscarPerfilesGradoSeparacion(int grado, Graph userGraph, User userTrial) {
+    private Set<User> searchProfilesSeparation(int degree, Graph userGraph, User userTrial) {
 
-        Set<User> perfilesEncontrados = new HashSet<>();
-        Queue<User> cola = new LinkedList<>();
-        Map<User, Integer> distancias = new HashMap<>();
+        Set<User> foundedProfiles = new HashSet<>();
+        Queue<User> tail = new LinkedList<>();
+        Map<User, Integer> distances = new HashMap<>();
 
-        cola.add(userTrial);
-        distancias.put(userTrial, 0);
+        tail.add(userTrial);
+        distances.put(userTrial, 0);
 
-        while (!cola.isEmpty()) {
-            User usuarioActual = cola.poll();
-            int distanciaActual = distancias.get(usuarioActual);
+        while (!tail.isEmpty()) {
+            User actualUser = tail.poll();
+            int actualDistance = distances.get(actualUser);
 
-            if (distanciaActual == grado) {
-                break; // Detener la búsqueda cuando alcanzamos el grado deseado
+            if (actualDistance == degree) {
+                break;
             }
 
-            for (User vecino : userGraph.getConnectedProfiles(usuarioActual)) {
-                if (!distancias.containsKey(vecino)) {
-                    distancias.put(vecino, distanciaActual + 1);
-                    cola.add(vecino);
-                    perfilesEncontrados.add(vecino);
+            for (User neighbor : userGraph.getConnectedProfiles(actualUser)) {
+                if (!distances.containsKey(neighbor)) {
+                    distances.put(neighbor, actualDistance + 1);
+                    tail.add(neighbor);
+                    foundedProfiles.add(neighbor);
                 }
             }
         }
 
-        return perfilesEncontrados;
+        return foundedProfiles;
     }
     
     

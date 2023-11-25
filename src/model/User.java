@@ -55,17 +55,6 @@ public class User {
         this.userGenre = userGenre;
     }
 
-    // Método para enviar un mensaje a otro usuario
-    public void sendMessage(User receiver, String message) {
-        // Aquí podrías implementar la lógica real para enviar el mensaje
-        receiver.receiveMessage(this, message); // Llamar al método receiveMessage del receptor para entregar el mensaje
-    }
-
-    // Método para recibir un mensaje de otro usuario
-    public void receiveMessage(User sender, String message) {
-        // Aquí se procesaría el mensaje recibido
-        System.out.println(userName + " recibió un mensaje de " + sender.getUserName() + ": " + message);
-    }
 
     
 }

@@ -11,9 +11,12 @@ import model.User;
 
 public class Main {
 
-    public static Controller sparkController = new Controller();
+    // We create instances of the Controller and Graph classes
+
+    static Controller sparkController = new Controller();
     static Graph userGraph = new Graph();
     
+    // Main method
 
     public static void main(String[] args) {
 
@@ -21,14 +24,18 @@ public class Main {
 
         int optionMenu = 0;
 
+        // Using the Controller we call a function that initializates the preloaded users
         sparkController.autoCreateGameSparks(userGraph);
 
+        // We show the User the first menu to the user, where they can register themselves or log into an alredy created user
         System.out.println("------------------------------------------");
         System.out.println("             Welcome to SPARK!            ");
         System.out.println("------------------------------------------");
         System.out.println("1. Register");
         System.out.println("2. Log In");
         System.out.println("3. Exit");
+
+        // Reading the user's choice from the menu
 
         System.out.println("OPTION:");
         optionMenu = lector.nextInt();
@@ -48,8 +55,11 @@ public class Main {
             case 2:
                 userLogIn();
                 break;
+            case 3:
+                break;
         }
     }
+
 
     public static void askUserData() {
 
@@ -234,6 +244,10 @@ public class Main {
     
         String createdUserMessage = sparkController.createUser(name, age, userInterests, userHobbies, genre, userGraph);
         System.out.println(createdUserMessage);
+
+        int position = sparkController.searchListIndex(name);
+        userStartScreen(sparkController.returnUserFromList(position));
+        
     }
 
     public static void userLogIn()
@@ -282,8 +296,8 @@ public class Main {
         System.out.println("                 MENU                     ");
         System.out.println("------------------------------------------");
         System.out.println("1. Look at my matches");
-        System.out.println("2. Message a match");
-        System.out.println("3. Ask a match for a date");
+        System.out.println("2. Recommend me compatible people");
+        System.out.println("3. Discovery Page");
         System.out.println("------------------------------------------");
         System.out.println("OPTION: ");
 
@@ -344,11 +358,15 @@ public class Main {
                 break;
             case 2:
                         System.out.println("Recommended users according to your interests");
-                        sparkController.mostrarRecomendacionesDeCoincidencia(userTrial, userGraph);
+                        sparkController.showRecommendations(userTrial, userGraph);
+                        repeatMenu(userTrial);
                 break;
             case 3:
                         System.out.println("Discovery Page");
                         sparkController.discoverNewProfiles(userGraph, userTrial);
+                        repeatMenu(userTrial);
+                break;
+            case 4:
                 break;
         }
     }
